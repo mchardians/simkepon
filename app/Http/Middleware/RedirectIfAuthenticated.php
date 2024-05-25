@@ -21,6 +21,17 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                switch(Auth::user()->role) {
+                    case "admin":
+                        return redirect(route('admin.dashboard'));
+                    case "bendahara":
+                        return redirect(RouteServiceProvider::HOME);
+                    case "walisantri":
+                        return redirect(RouteServiceProvider::HOME);
+                    case "kepala-pondok":
+                        return redirect(RouteServiceProvider::HOME);
+                }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }
