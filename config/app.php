@@ -170,6 +170,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\WaliSantriServiceProvider::class,
+        App\Providers\SantriServiceProvider::class,
     ])->toArray(),
 
     /*

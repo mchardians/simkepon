@@ -34,14 +34,14 @@ class AuthController extends Controller
         if($this->userService->login($credentials)) {
             $request->session()->regenerate();
 
-            switch(Auth::user()->role) {
+            switch(Auth::user()->role->name) {
                 case "admin":
                     return redirect()->intended(route('admin.dashboard'));
                 case "bendahara":
                     return redirect()->intended('dashboard');
                 case "walisantri":
                     return redirect()->intended('dashboard');
-                case "kepala-pondok":
+                case "kepalapondok":
                     return redirect()->intended('dashboard');
             }
         }

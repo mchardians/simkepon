@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('nis', 18)->nullable(false)->unique();
             $table->string('name', 255)->nullable(false);
             $table->enum('gender', ['laki-laki', 'perempuan'])->nullable(false);
-            $table->date('birth_day')->nullable(false);
+            $table->string('birth_place', 255)->nullable(false);
+            $table->date('birth_date')->nullable(false);
             $table->string('picture', 255)->nullable(true);
             $table->text('address')->nullable(false);
             $table->foreignIdFor(WaliSantri::class);

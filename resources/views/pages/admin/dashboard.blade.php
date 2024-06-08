@@ -4,22 +4,13 @@
             <div class="section-header">
                 <h1>Dashboard</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Layout</a></div>
-                    <div class="breadcrumb-item">Top Navigation</div>
+                    <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
+                    <div class="breadcrumb-item">Home</div>
                 </div>
             </div>
 
             <div class="section-body">
                 <div class="row">
-                    <div class="col-12 mb-4">
-                        <div class="hero bg-primary text-white">
-                            <div class="hero-inner">
-                                <h2>Welcome Back, {{ Auth::user()->name }}!</h2>
-                                <p class="lead">This page is a place to manage posts, categories and more.</p>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-primary">
@@ -30,7 +21,7 @@
                                     <h4>Total Santriwan</h4>
                                 </div>
                                 <div class="card-body">
-                                    10
+                                    {{ $santriwan }}
                                 </div>
                             </div>
                         </div>
@@ -45,7 +36,7 @@
                                     <h4>Total Santriwati</h4>
                                 </div>
                                 <div class="card-body">
-                                    42
+                                    {{ $santriwati }}
                                 </div>
                             </div>
                         </div>
@@ -60,7 +51,7 @@
                                     <h4>Total Santri</h4>
                                 </div>
                                 <div class="card-body">
-                                    1,201
+                                    {{ $totalSantri }}
                                 </div>
                             </div>
                         </div>
@@ -100,8 +91,9 @@
                                         <i class="fas fa-cog"></i>
                                     </div>
                                     <div class="card-body">
-                                        <h4>General</h4>
-                                        <p>General settings such as, site title, site description, address and so on.
+                                        <h4>Konfigurasi</h4>
+                                        <p>Redirect to the configuration page to manage user master data and whatsapp
+                                            configurations.
                                         </p>
                                         <a href="{{ route('admin.konfigurasi') }}" class="card-cta">Change Setting <i
                                                 class="fas fa-chevron-right"></i></a>
@@ -122,23 +114,43 @@
         <script>
             const ctx = document.getElementById("myChart4").getContext('2d');
 
+            Chart.plugins.register({
+                afterDraw: function(chart) {
+                    if (JSON.stringify(chart.data.datasets[0].data) === JSON.stringify([0, 0])) {
+                        chart.options.tooltips.enabled = false;
+
+                        const ctx = chart.ctx;
+                        const width = chart.width;
+                        const height = chart.height;
+                        chart.clear();
+
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.font = "16px normal 'Sans-Serif'";
+                        ctx.fillText('No data to display', width / 2, height / 2);
+                        ctx.restore();
+                    }
+                }
+            });
+
             const myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     datasets: [{
                         data: [
-                            50,
-                            50,
+                            {{ $santriwan }},
+                            {{ $santriwati }},
                         ],
                         backgroundColor: [
-                            '#fc544b',
                             '#6777ef',
+                            '#fc544b',
                         ],
                         label: 'Dataset 1'
                     }],
                     labels: [
-                        'Red',
-                        'Blue'
+                        'Laki-Laki',
+                        'Perempuan'
                     ],
                 },
                 options: {

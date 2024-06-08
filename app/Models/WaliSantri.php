@@ -13,6 +13,11 @@ class WaliSantri extends Model
     protected $table = 'wali_santri';
     protected $primaryKey = 'id';
 
+    protected $fillable = [
+        'nik', 'name', 'email', 'education',
+        'job', 'phone', 'address',
+    ];
+
     public function santri(): HasMany {
         return $this->hasMany(Santri::class, 'wali_santri_id', 'id');
     }

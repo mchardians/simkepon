@@ -12,6 +12,7 @@ class Santri extends Model
 
     protected $table = 'santri';
     protected $primaryKey = 'id';
+    protected $fillable = ['nis', 'name', 'gender', 'birth_place', 'birth_date', 'wali_santri_id', 'address', 'picture'];
 
     public function walisantri(): BelongsTo {
         return $this->belongsTo(WaliSantri::class, 'wali_santri_id', 'id');

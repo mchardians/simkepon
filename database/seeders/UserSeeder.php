@@ -13,11 +13,39 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@simkepon.app',
-            'password' => bcrypt('rahasiaadmin'),
-            'role' => 'admin'
+        User::query()->insert([
+            [
+                'name' => 'Admin',
+                'email' => 'admin@simkepon.app',
+                'password' => bcrypt('rahasia'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role_id' => 1
+            ],
+            [
+                'name' => 'Bendahara',
+                'email' => 'bendahara@simkepon.app',
+                'password' => bcrypt('rahasia'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role_id' => 2
+     ],
+            [
+                'name' => 'Wali Santri',
+                'email' => 'walisantri@simkepon.app',
+                'password' => bcrypt('rahasia'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role_id' => 3
+            ],
+            [
+                'name' => 'Kepala Pondok',
+                'email' => 'kepalapondok@simkepon.app',
+                'password' => bcrypt('rahasia'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role_id' => 4
+            ],
         ]);
     }
 }

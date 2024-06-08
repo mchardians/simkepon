@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('wali_santri', function (Blueprint $table) {
             $table->id();
+            $table->string('nik', 16)->nullable(false)->unique();
             $table->string('name', 255)->nullable(false);
             $table->string('email')->nullable(false)->unique();
             $table->enum('education', [
-                'Belum sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
-                'Diploma I-III', 'Strata I', 'Strata II', 'Strata III'
+                'belum sekolah', 'sd', 'smp', 'sma',
+                'diploma', 'sarjana', 'magister', 'doktor'
             ])->nullable(false);
             $table->string('job', 50)->nullable(false);
             $table->string('phone', 13)->nullable(false)->unique();
