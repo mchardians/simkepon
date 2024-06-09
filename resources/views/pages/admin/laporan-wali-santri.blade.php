@@ -33,6 +33,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No.</th>
+                                                <th>NIK</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Pendidikan</th>
@@ -77,17 +78,21 @@
                         searchable: false
                     },
                     {
+                        data: 'nik',
+                        name: 'nik'
+                    },
+                    {
                         data: 'name',
                         name: 'name'
                     },
                     {
                         data: 'email',
-                        name: 'email'
+                        name: 'email',
+                        width: '100px'
                     },
                     {
                         data: 'education',
-                        name: 'education',
-                        width: '100px'
+                        name: 'education'
                     },
                     {
                         data: 'job',

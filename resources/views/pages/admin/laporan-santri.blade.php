@@ -37,6 +37,7 @@
                                                 <th class="text-center">Nomor Induk Santri</th>
                                                 <th class="text-center">Nama</th>
                                                 <th class="text-center">Jenis Kelamin</th>
+                                                <th class="text-center">Tempat Lahir</th>
                                                 <th class="text-center">Tanggal Lahir</th>
                                             </tr>
                                         </thead>
@@ -92,8 +93,12 @@
                             name: 'gender'
                         },
                         {
-                            data: 'birth_day',
-                            name: 'birth_day'
+                            data: 'birth_place',
+                            name: 'birth_place'
+                        },
+                        {
+                            data: 'birth_date',
+                            name: 'birth_date'
                         },
                     ],
                     columnDefs: [
