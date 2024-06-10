@@ -63,16 +63,17 @@
                                     <div class="collapse show" id="mycard-collapse">
                                         <div class="card-body">
                                             <div class="text-center">
-                                                <h5>Status: <span class="text-success">Connected</span></h5>
+                                                <h5 id="state">Status:</h5>
                                             </div>
                                             <div class="text-center mt-3">
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/WhatsApp_click-to-chat_QR_code.png/902px-WhatsApp_click-to-chat_QR_code.png?20200811163128"
-                                                    alt="QR Code" class="img-fluid" width="250px">
+                                                <img alt="QR Code" class="img-fluid m-auto" width="250px" id="loaders">
+                                                    <div id="qrCode"></div>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <h6 class="text-info">Panduan:</h6>
                                             </div>
                                             <ul class="border border-secondary" style="border-style: dashed !important;">
+                                                <li>Klik Start Server</li>
                                                 <li>Buka Whatsapp <i class="fas fa-chevron-right"></i> Tautkan Perangkat</li>
                                                 <li>Scan QR Code di atas</li>
                                                 <li>Sistem terhubung dengan WhatsApp</li>
@@ -81,8 +82,8 @@
                                     </div>
                                     <div class="card-footer bg-whitesmoke br">
                                         <div class="text-center">
-                                            <button class="btn btn-success mr-1">Start Server</button>
-                                            <button class="btn btn-danger">Logout</button>
+                                            <button class="btn btn-success mr-1" id="btn-start" value="start">Start Server</button>
+                                            <button class="btn btn-danger" id="btn-logout">Logout</button>
                                         </div>
                                     </div>
                                 </div>
@@ -182,9 +183,16 @@
         <script src="{{ asset('assets/js/libs/datatable/dataTables.bootstrap4.min.js') }}"></script>
         <script src="{{ asset('assets/js/libs/selectric/jquery.selectric.min.js') }}"></script>
         <script src="{{ asset('assets/js/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+        <script src="{{ asset('assets/js/libs/qrcodeJS/qrcode.js') }}"></script>
     </x-slot>
     <x-slot name="scripts">
         <script src="{{ asset('assets/js/datatables/user-datatable.js') }}"></script>
         <script src="{{ asset('assets/js/actions/user-action.js') }}"></script>
+        <script>
+            const unpaired = "{{ asset('assets/loaders/loading.svg') }}";
+            const paired = "{{ asset('assets/loaders/connected.png') }}";
+        </script>
+        <script src="{{ asset('assets/js/main.js') }}"></script>
     </x-slot>
 </x-horizontal-layout>

@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "chart.js": "^4.4.2",
-        "chart.js-plugin-labels-dv": "^5.0.1-beta"
+        "chart.js-plugin-labels-dv": "^5.0.1-beta",
+        "socket.io": "^4.7.5"
     }
 }

@@ -65,9 +65,7 @@
                                 <div class="card-header">
                                     <h4>Whatsapp State</h4>
                                 </div>
-                                <div class="card-body">
-                                    Connected
-                                </div>
+                                <div class="card-body" id="whatsapp-state"></div>
                             </div>
                         </div>
                     </div>
@@ -109,8 +107,30 @@
     <x-slot name="js">
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.min.js"></script>
         <script src="{{ asset('assets/js/libs/chartjs-labels/chartjs-plugin-labels.min.js') }}"></script>
+        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     </x-slot>
     <x-slot name="scripts">
+        <script>
+            const socket = io('http://localhost:3000');
+
+            switch (localStorage.getItem('state')) {
+                case "UNPAIRED_IDLE":
+                    $("#whatsapp-state").html("Unpaired");
+                    break;
+                case "PAIRED":
+                    $("#whatsapp-state").html("Paired");
+                    break;
+                default:
+                    $("#whatsapp-state").html("Pending");
+            }
+
+            socket.on('change_state', function(state) {
+
+                $("#whatsapp-state").html(state);
+
+                localStorage.setItem('state', state);
+            });
+        </script>
         <script>
             const ctx = document.getElementById("myChart4").getContext('2d');
 
