@@ -1,6 +1,6 @@
 const btnStart = document.getElementById("btn-start");
 const btnLogout = document.getElementById("btn-logout");
-const socket = io("http://127.0.0.1:3000");
+const socket = io("http://localhost:3000");
 
 btnStart.addEventListener("click", function(e) {
     e.preventDefault();
@@ -11,7 +11,7 @@ btnStart.addEventListener("click", function(e) {
 btnLogout.addEventListener("click", function(e) {
     e.preventDefault();
 
-    socket.emit("logout");
+    localStorage.getItem("state") === "UNPAIRED" || localStorage.getItem("state") === "UNPAIRED_IDLE" ? Swal.fire({icon: 'error', title: 'Oops...', text: 'Your system is not paired yet'}) : socket.emit("logout");
 
     localStorage.removeItem("qr");
     localStorage.setItem("state", "UNPAIRED");
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
         case "PAIRED":
             showLoaders(paired);
             $("#state span").remove();
-            $("<span class='text-success'> Unpaired</span>").appendTo("#state");
+            $("<span class='text-success'> Paired</span>").appendTo("#state");
             break;
         default:
             showLoaders(unpaired);

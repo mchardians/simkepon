@@ -175,4 +175,8 @@ class WaliSantriController extends Controller
             ], $e->getStatusCode());
         }
     }
+
+    public function report() {
+        return view('pages.admin.laporan-wali-santri');
+    }
 }

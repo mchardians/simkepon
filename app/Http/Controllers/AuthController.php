@@ -38,11 +38,11 @@ class AuthController extends Controller
                 case "admin":
                     return redirect()->intended(route('admin.dashboard'));
                 case "bendahara":
-                    return redirect()->intended('dashboard');
+                    return redirect()->intended(route('bendahara.dashboard'));
                 case "walisantri":
-                    return redirect()->intended('dashboard');
+                    return redirect()->intended(route('walisantri.dashboard'));
                 case "kepalapondok":
-                    return redirect()->intended('dashboard');
+                    return redirect()->intended(route('kepalapondok.dashboard'));
             }
         }
 

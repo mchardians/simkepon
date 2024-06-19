@@ -25,11 +25,11 @@ class RedirectIfAuthenticated
                     case "admin":
                         return redirect(route('admin.dashboard'));
                     case "bendahara":
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect(route('bendahara.dashboard'));
                     case "walisantri":
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect(route('walisantri.dashboard'));
                     case "kepalapondok":
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect(route('kepalapondok.dashboard'));
                 }
 
                 return redirect(RouteServiceProvider::HOME);

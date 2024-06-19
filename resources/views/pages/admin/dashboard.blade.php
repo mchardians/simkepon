@@ -126,7 +126,16 @@
 
             socket.on('change_state', function(state) {
 
-                $("#whatsapp-state").html(state);
+                switch (state) {
+                    case "UNPAIRED_IDLE":
+                        $("#whatsapp-state").html("Unpaired");
+                        break;
+                    case "PAIRED":
+                        $("#whatsapp-state").html("Paired");
+                        break;
+                    default:
+                        $("#whatsapp-state").html("Pending");
+                }
 
                 localStorage.setItem('state', state);
             });
