@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\Contracts\UserService;
+use App\Services\Contracts\WaliSantriService;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -11,9 +12,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class UserController extends Controller
 {
     private UserService $userService;
+    private WaliSantriService $waliSantriService;
 
-    public function __construct(UserService $userService) {
+    public function __construct(UserService $userService, WaliSantriService $waliSantriService) {
         $this->userService = $userService;
+        $this->waliSantriService = $waliSantriService;
     }
 
     /**
@@ -33,7 +36,37 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            if(request()->ajax()) {
+                if(request()->has('walisantri_id')) {
+                    $walisantri = $this->waliSantriService->findWaliSantri(request()->get('walisantri_id'));
+
+                    return response()->json([
+                        "success" => true,
+                        "data" => $walisantri
+                    ]);
+                }
+
+                $walisantris = $this->waliSantriService->getDataWaliSantri();
+
+                if(request()->has('search')) {
+                    $walisantris = $this->waliSantriService->getDataWaliSantri(request()->get('search'));
+                }
+
+                return response()->json([
+                    "success" => true,
+                    "data" => $walisantris
+                ]);
+            }
+
+            return;
+        } catch (HttpException $e) {
+            return response()->json([
+                "success" => false,
+                "status" => $e->getStatusCode(),
+                "message" => $e->getMessage()
+            ], $e->getStatusCode());
+        }
     }
 
     /**

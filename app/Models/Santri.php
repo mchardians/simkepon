@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Santri extends Model
 {
@@ -16,5 +17,17 @@ class Santri extends Model
 
     public function walisantri(): BelongsTo {
         return $this->belongsTo(WaliSantri::class, 'wali_santri_id', 'id');
+    }
+
+    public function iuran(): HasMany {
+        return $this->hasMany(Iuran::class, 'santri_id', 'id');
+    }
+
+    public function pemasukan(): HasMany {
+        return $this->hasMany(Pemasukan::class, 'santri_id', 'id');
+    }
+
+    public function cicilan(): HasMany {
+        return $this->hasMany(Cicilan::class, 'santri_id', 'id');
     }
 }

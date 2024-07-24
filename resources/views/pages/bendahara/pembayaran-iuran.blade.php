@@ -7,76 +7,35 @@
             input[type='button'].year:hover {
                 background-color: whitesmoke !important;
             }
+
+            .btn-circle {
+                width: 30px;
+                height: 30px;
+                padding: 6px 0px;
+                border-radius: 15px;
+                text-align: center;
+                font-size: 12px;
+                line-height: 1.42857;
+            }
         </style>
     </x-slot>
     <x-slot name="content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('bendahara.santri.pembayaran') }}" class="btn btn-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
                 <h1>Pembayaran Iuran</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('bendahara.dashboard') }}">Dashboard</a></div>
                     <div class="breadcrumb-item">Home</div>
                 </div>
             </div>
-
             <div class="section-body">
-                <div class="row justify-content-center mb-3">
-                    <div class="col-10 col-md-8 col-lg-7">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" data-server="{{ route('bendahara.keuangan-masuk.pembayaran') }}"
-                                        data-live-server="true" data-value-field="id" data-label-field="name"
-                                        placeholder="Cari Santri..."
-                                        id="search-santri" data-full-width="true">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" id="matched-content">
-                    @foreach ($santris as $santri)
-                        <div class="col-6 col-md-3 col-lg-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <img class="img-fluid mx-auto d-block img-thumbnail mb-3" width="115"
-                                        src="{{ asset("storage/santri/". $santri->picture) }}" alt="Foto Santri">
-                                    <div class="d-block mb-3">
-                                        <h6 class="text-center">{{ $santri->name }}</h6>
-                                        <div class="text-center text-small">{{ $santri->nis }}</div>
-                                    </div>
-                                    <button class="btn btn-primary btn-block">Detail</button>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    </x-slot>
-    <x-slot name="js">
-        <script src="{{ asset('assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-    </x-slot>
-    <x-slot name="scripts">
-        <script type="module">
-            import Autocomplete from "{{ asset('assets/js/libs/autocomplete/autocomplete.min.js') }}";
-
-            Autocomplete.init("#search-santri", {
-                highlightTyped: true,
-                preventBrowserAutocomplete: true,
-                onSelectItem: fillMatchedContent,
-            });
-        </script>
-        <script>
-            function fillMatchedContent(response) {
-                $("#matched-content").empty();
-
-                const content = `
-                    <div class="col-3">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3 col-lg-3">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Daftar Iuran</h4>
@@ -120,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -150,15 +109,15 @@
                                         aria-labelledby="masak-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4" id="iuran-container">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['masak'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Masak</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['masak'] }}">{{ Number::currency($iuran['masak'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="masak">Masak</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -169,15 +128,15 @@
                                         aria-labelledby="gasminyak-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['gas_minyak'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Gas & Minyak</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['gas_minyak'] }}">{{ Number::currency($iuran['gas_minyak'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="gas_minyak">Gas & Minyak</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -187,15 +146,15 @@
                                     <div class="tab-pane fade" id="iuran-kas" role="tabpanel" aria-labelledby="kas-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['kas'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Kas</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['kas'] }}">{{ Number::currency($iuran['kas'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="kas">Kas</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -205,15 +164,15 @@
                                     <div class="tab-pane fade" id="iuran-tabungan" role="tabpanel" aria-labelledby="tabungan-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['tabungan'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Tabungan</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['tabungan'] }}">{{ Number::currency($iuran['tabungan'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="tabungan">Tabungan</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -223,33 +182,33 @@
                                     <div class="tab-pane fade" id="iuran-bisaroh" role="tabpanel" aria-labelledby="bisaroh-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['bisaroh'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Bisaroh</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['bisaroh'] }}">{{ Number::currency($iuran['bisaroh'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="bisaroh">Bisaroh</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="iuran-transport" role="tabpanel" aria-labelledby="bisaroh-tab">
+                                    <div class="tab-pane fade" id="iuran-transport" role="tabpanel" aria-labelledby="transport-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['transport'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Transport</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['transport'] }}">{{ Number::currency($iuran['transport'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="transport">Transport</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,15 +218,15 @@
                                     <div class="tab-pane fade" id="iuran-darurat" role="tabpanel" aria-labelledby="darurat-tab">
                                         <div class="row">
                                             @foreach ($months as $month)
-                                                <div class="col-4">
+                                                <div class="col-sm-12 col-md-6 col-lg-4">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h6 class="text-center bulan" id="month">{{ $month }} <span class="tahun" id="year"></span></h6>
-                                                            <div class="text-center" id="amount">{{ Number::currency($iuran['darurat'], "IDR") }}</div>
-                                                            <div class="text-center" id="iuran">Darurat</div>
+                                                            <h6 class="text-center" data-month="{{ $month }}">{{ $month }} <span class="year"></span></h6>
+                                                            <div class="text-center" data-amount="{{ $iuran['darurat'] }}">{{ Number::currency($iuran['darurat'], 'IDR') }}</div>
+                                                            <div class="text-center" data-iuran="darurat">Darurat</div>
                                                         </div>
                                                         <div class="card-footer border-top p-2">
-                                                            <button class="btn btn-primary btn-block">Bayar</button>
+                                                            <button class="btn btn-primary btn-block btn-pay" data-index="{{ $loop->index }}">Bayar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -278,7 +237,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-sm-12 col-md-3 col-lg-3">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -291,12 +250,12 @@
                                                 <tr>
                                                     <th>NIS</th>
                                                     <td>:</td>
-                                                    <td id='nis'></td>
+                                                    <td><span data-nis="{{ $santris->nis }}">{{ $santris->nis }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Nama</th>
                                                     <td>:</td>
-                                                    <td id='name'></td>
+                                                    <td>{{ $santris->name }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -306,79 +265,37 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Detail Pembayaran</h4>
+                                        <h4>Rincian Pembayaran</h4>
                                     </div>
                                     <div class="card-body">
-                                        <div class="d-flex justify-content-between border-bottom py-3">
-                                            <div class="d-block">
-                                                <span><strong>Masak</strong></span><br>
-                                                <span class="text-small">IDR 120,000.00</span>
-                                            </div>
-                                            <button class="btn btn-icon btn-danger"><i class="fas fa-times"></i></button>
-                                        </div>
-                                        <div class="d-flex justify-content-between border-bottom py-3">
-                                            <div class="d-block">
-                                                <span><strong>Masak</strong></span><br>
-                                                <span class="text-small">IDR 120,000.00</span>
-                                            </div>
-                                            <button class="btn btn-icon btn-danger"><i class="fas fa-times"></i></button>
-                                        </div>
-                                        <div class="d-block">
-                                            <div class="py-3">
-                                                <h6>Total Tagihan:</h6>
-                                                <h6>Rp.277.000</h6>
-                                            </div>
-
-                                            <button class="btn btn-primary btn-block">Konfirmasi Pembayaran</button>
-                                        </div>
+                                        <table width="100%" id="iuran-table">
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="text-right" colspan="2">Total Tagihan</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" id="total" colspan="2">{{ Number::currency(0, 'IDR') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"><button class="btn btn-primary btn-block" id="btn-confirm">Konfirmasi Pembayaran</button></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `;
-
-                $("#matched-content").html(content);
-
-                $("#nis").html(response.nis);
-                $("#name").html(response.name);
-
-                $("#yearpicker").val(new Date().getFullYear());
-                $(".tahun").text($("#yearpicker").val());
-
-                $("#yearpicker").datepicker({
-                    format: "yyyy",
-                    viewMode: "years",
-                    minViewMode: "years",
-                    autoclose: true,
-                }).on('changeDate', function(e) {
-                    $("#yearpicker").datepicker('hide');
-
-                    $(".tahun").text($("#yearpicker").val());
-                });
-
-                $("#previousYear").click(function(e) {
-                    e.preventDefault();
-
-                    const currentYear = parseInt($("#yearpicker").val(), 10);
-
-                    if (!isNaN(currentYear)) {
-                        $("#yearpicker").datepicker('update', new Date(currentYear - 1, 0, 1));
-                        $('#yearpicker').datepicker('hide').trigger('changeDate');
-                    }
-                });
-
-                $("#nextYear").click(function(e) {
-                    e.preventDefault();
-
-                    const currentYear = parseInt($("#yearpicker").val(), 10);
-
-                    if (!isNaN(currentYear)) {
-                        $("#yearpicker").datepicker('update', new Date(currentYear + 1, 0, 1));
-                        $('#yearpicker').datepicker('hide').trigger('changeDate');
-                    }
-                });
-            }
-        </script>
+                </div>
+            </div>
+        </section>
+    </x-slot>
+    <x-slot name="js">
+        <script src="{{ asset('assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset('assets/js/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    </x-slot>
+    <x-slot name="scripts">
+        <script src="{{ asset('assets/js/actions/pembayaran-action.js') }}"></script>
     </x-slot>
 </x-vertical-layout>

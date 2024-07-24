@@ -1,12 +1,19 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\KonfigurasiController;
-use App\Http\Controllers\PembayaranController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MutasiController;
 use App\Http\Controllers\SantriController;
+use App\Http\Controllers\CicilanController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\WaliSantriController;
+use App\Http\Controllers\KonfigurasiController;
+use App\Http\Controllers\RekapitulasiController;
+use App\Http\Controllers\KeuanganMasukController;
+use App\Http\Controllers\KeuanganKeluarController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,18 +40,18 @@ Route::middleware('guest')->group(function() {
 
 Route::middleware('auth')->group(function() {
     Route::middleware('roles:admin')->group(function() {
-        Route::get('/admin/dashboard', [SantriController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
         Route::resource('/admin/santri', SantriController::class)->names(
             [
-                    'index' => 'admin.santri',
-                    'show' => 'admin.santri.show',
-                    'create' => 'admin.santri.create',
-                    'store' => 'admin.santri.store',
-                    'edit' => 'admin.santri.edit',
-                ]
+                'index' => 'admin.santri',
+                'show' => 'admin.santri.show',
+                'create' => 'admin.santri.create',
+                'store' => 'admin.santri.store',
+                'edit' => 'admin.santri.edit',
+            ]
         );
         Route::resource('/admin/wali-santri', WaliSantriController::class)->names(
-     [
+            [
                 'index' => 'admin.wali-santri',
                 'store' => 'admin.wali-santri.store',
                 'edit' => 'admin.wali-santri.edit',
@@ -52,8 +59,9 @@ Route::middleware('auth')->group(function() {
         );
         Route::get('/admin/konfigurasi', [KonfigurasiController::class, 'index'])->name('admin.konfigurasi');
         Route::resource('/admin/konfigurasi/users', UserController::class)->names(
-    [
+            [
                 'index' => 'admin.konfigurasi.users',
+                'create' => 'admin.konfigurasi.users.create',
                 'store' => 'admin.konfigurasi.users.store',
                 'edit' => 'admin.konfigurasi.users.edit',
             ]
@@ -63,70 +71,62 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::middleware('roles:bendahara')->group(function() {
-        Route::get('/bendahara/dashboard', function() {
-            return view('pages.bendahara.dashboard');
-        })->name('bendahara.dashboard');
+        Route::get('/bendahara/dashboard', [DashboardController::class, 'bendahara'])->name('bendahara.dashboard');
 
-        Route::get('/bendahara/keuangan-masuk', function() {
-            return view('pages.bendahara.keuangan-masuk');
-        })->name('bendahara.keuangan-masuk');
+        Route::get('/bendahara/santri/pembayaran', [PembayaranController::class, 'index'])->name('bendahara.santri.pembayaran');
+        Route::get('/bendahara/santri/{nis}/pembayaran', [PembayaranController::class, 'create'])->name('bendahara.santri.pembayaran.create');
+        Route::post('/bendahara/santri/{nis}/pembayaran', [PembayaranController::class, 'store'])->name('bendahara.santri.pembayaran.store');
 
-        Route::resource('/bendahara/keuangan-masuk/pembayaran', PembayaranController::class)->names([
-            'index' => 'bendahara.keuangan-masuk.pembayaran'
-        ]);
+        Route::get('/bendahara/keuangan-masuk', [KeuanganMasukController::class, 'index'])->name('bendahara.keuangan-masuk');
+        Route::get('/bendahara/keuangan-masuk/{id}/detail', [KeuanganMasukController::class, 'index'])->name('bendahara.keuangan-masuk.detail');
+        Route::get('/bendahara/keuangan-masuk/invoice/{id}', [KeuanganMasukController::class, 'show'])->name('bendahara.keuangan-masuk.invoice');
+        Route::post('/bendahara/keuangan-masuk/invoice/send', [KeuanganMasukController::class, 'send'])->name('bendahara.keuangan-masuk.invoice.send');
 
-        Route::get('/bendahara/keuangan-masuk/riwayat', function() {
-            return view('pages.bendahara.riwayat-pembayaran');
-        })->name('bendahara.keuangan-masuk.riwayat');
+        Route::resource('/bendahara/keuangan-keluar', KeuanganKeluarController::class)->names(
+            [
+                'index' => 'bendahara.keuangan-keluar',
+                'store' => 'bendahara.keuangan-keluar.store',
+                'edit' => 'bendahara.keuangan-keluar.edit',
+            ]
+        );
 
-        Route::get('/bendahara/keuangan-keluar', function() {
-            return view('pages.bendahara.keuangan-keluar');
-        })->name('bendahara.keuangan-keluar');
+        Route::get('/bendahara/mutasi', [MutasiController::class, 'index'])->name('bendahara.mutasi');
+        Route::get('/bendahara/riwayat/mutasi', [MutasiController::class, 'riwayat'])->name('bendahara.riwayat.mutasi');
+        Route::post('/bendahara/mutasi/transfer', [MutasiController::class, 'transfer'])->name('bendahara.mutasi.transfer');
 
-        Route::get('/bendahara/cicilan/pembayaran', function() {
-            return view('pages.bendahara.cicilan');
-        })->name('bendahara.cicilan.pembayaran');
+        Route::resource('/bendahara/cicilan/pembayaran', CicilanController::class)->names(
+            [
+                'index' => 'bendahara.cicilan.pembayaran',
+                'create' => 'bendahara.cicilan.pembayaran.create',
+                'store' => 'bendahara.cicilan.pembayaran.store',
+                'show' => 'bendahara.cicilan.pembayaran.show'
+            ]
+        );
 
-        Route::get('/bendahara/iuran/rekapitulasi', function() {
-            return view('pages.bendahara.rekapitulasi');
-        })->name('bendahara.iuran.rekapitulasi');
+        Route::get('/bendahara/iuran/rekapitulasi', [RekapitulasiController::class, 'index'])->name('bendahara.iuran.rekapitulasi');
 
-        Route::get('/bendahara/laporan/keuangan-masuk', function() {
-            return view('pages.bendahara.laporan-keuangan-masuk');
-        })->name('bendahara.laporan.keuangan-masuk');
+        Route::get('/bendahara/laporan/keuangan-masuk', [KeuanganMasukController::class, 'report'])->name('bendahara.laporan.keuangan-masuk');
 
-        Route::get('/bendahara/laporan/keuangan-keluar', function() {
-            return view('pages.bendahara.laporan-keuangan-keluar');
-        })->name('bendahara.laporan.keuangan-keluar');
+        Route::get('/bendahara/laporan/keuangan-keluar', [KeuanganKeluarController::class, 'report'])->name('bendahara.laporan.keuangan-keluar');
 
     });
 
     Route::middleware('roles:walisantri')->group(function() {
-        Route::get('/wali-santri/dashboard', function() {
-            return view('pages.walisantri.dashboard');
-        })->name('walisantri.dashboard');
+        Route::get('/wali-santri/dashboard', [DashboardController::class, 'walisantri'])->name('walisantri.dashboard');
 
-        Route::get('/wali-santri/rekapitulasi/santri', function() {
-            return view('pages.walisantri.rekapitulasi');
-        })->name('walisantri.rekapitulasi.santri');
+        Route::get('/wali-santri/pembayaran/riwayat', [PembayaranController::class, 'riwayat'])->name('walisantri.pembayaran.riwayat');
 
-        Route::get('/wali-santri/pembayaran/riwayat', function() {
-            return view('pages.walisantri.riwayat-pembayaran');
-        })->name('walisantri.pembayaran.riwayat');
+        Route::get('/wali-santri/rekapitulasi/santri', [RekapitulasiController::class, 'rekapitulasiSantri'])->name('walisantri.rekapitulasi.santri');
     });
 
     Route::middleware('roles:kepalapondok')->group(function() {
-        Route::get('/kepala-pondok/dashboard', function() {
-            return view('pages.kepala-pondok.dashboard');
-        })->name('kepalapondok.dashboard');
+        Route::get('/kepala-pondok/dashboard', [DashboardController::class, 'kepalapondok'])->name('kepalapondok.dashboard');
 
-        Route::get('/kepala-pondok/laporan/keuangan-masuk', function() {
-            return view('pages.kepala-pondok.laporan-keuangan-masuk');
-        })->name('kepalapondok.laporan.keuangan-masuk');
+        Route::get('/kepala-pondok/laporan/keuangan-masuk', [KeuanganMasukController::class, 'reportKepalaPondok'])->name('kepalapondok.laporan.keuangan-masuk');
+        Route::delete('/kepala-pondok/keuangan-masuk/{id}', [KeuanganMasukController::class, 'destroy'])->name('kepalapondok.keuangan-masuk.destroy');
 
-        Route::get('/kepala-pondok/laporan/keuangan-keluar', function() {
-            return view('pages.kepala-pondok.laporan-keuangan-keluar');
-        })->name('kepalapondok.laporan.keuangan-keluar');
+        Route::get('/kepala-pondok/laporan/keuangan-keluar', [KeuanganKeluarController::class, 'reportKepalaPondok'])->name('kepalapondok.laporan.keuangan-keluar');
+        Route::delete('/kepala-pondok/keuangan-keluar/{id}', [KeuanganKeluarController::class, 'destroy'])->name('kepalapondok.keuangan-keluar.destroy');
     });
 
     Route::post('/user/logout', [AuthController::class, 'logout'])->name('logout');

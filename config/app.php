@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
@@ -172,6 +172,11 @@ return [
         App\Providers\UserServiceProvider::class,
         App\Providers\WaliSantriServiceProvider::class,
         App\Providers\SantriServiceProvider::class,
+        App\Providers\SaldoServiceProvider::class,
+        App\Providers\IuranServiceProvider::class,
+        App\Providers\PemasukanServiceProvider::class,
+        App\Providers\PengeluaranServiceProvider::class,
+        App\Providers\CicilanServiceProvider::class,
     ])->toArray(),
 
     /*

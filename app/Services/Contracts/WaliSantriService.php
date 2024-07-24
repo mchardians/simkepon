@@ -7,7 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Collection;
 
 interface WaliSantriService {
-    public function getWaliSantris(): JsonResponse;
+    public function getWaliSantris($mode = null): JsonResponse;
+
+    public function getDataWaliSantri(string $search = null): Collection;
 
     public function findWaliSantri(string $id): Collection|WaliSantri;
 

@@ -11,6 +11,7 @@ interface SantriService
     public function getSantris(string $gender = null): JsonResponse;
     public function getWaliSantris(): Collection;
     public function findSantri(string $id): Collection|Santri;
+    public function showSantrisByNameOrNis($params): Collection|Santri;
     public function createSantri(array $data): bool;
     public function updateSantri(string $id, array $data): bool;
     public function deleteSantri(string $id): bool;

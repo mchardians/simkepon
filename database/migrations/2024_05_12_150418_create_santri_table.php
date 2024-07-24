@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('santri', function (Blueprint $table) {
             $table->id();
-            $table->string('nis', 18)->nullable(false)->unique();
+            $table->char('nis', 18)->nullable(false)->unique();
             $table->string('name', 255)->nullable(false);
             $table->enum('gender', ['laki-laki', 'perempuan'])->nullable(false);
             $table->string('birth_place', 255)->nullable(false);

@@ -39,6 +39,7 @@
                                                 <th>Pendidikan</th>
                                                 <th>Pekerjaan</th>
                                                 <th>Telepon</th>
+                                                <th>Santri</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -58,10 +59,15 @@
         <script
             src="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.0.8/b-3.0.2/b-colvis-3.0.2/b-html5-3.0.2/b-print-3.0.2/datatables.min.js">
         </script>
+        <script src="{{ asset('assets/js/libs/moment/moment-with-locales.min.js') }}"></script>
     </x-slot>
     <x-slot name="scripts">
         <script>
             const walisantriTable = $('#walisantri-table').DataTable({
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, 'All']
+                ],
                 ordering: true,
                 serverSide: true,
                 processing: true,
@@ -69,6 +75,9 @@
                 responsive: true,
                 ajax: {
                     'url': $("#walisantri-table").data("url"),
+                    'data': function(d) {
+                        d.mode = "print";
+                    }
                 },
                 columns: [{
                         data: 'DT_RowIndex',
@@ -88,7 +97,6 @@
                     {
                         data: 'email',
                         name: 'email',
-                        width: '100px'
                     },
                     {
                         data: 'education',
@@ -102,16 +110,99 @@
                         data: 'phone',
                         name: 'phone'
                     },
+                    {
+                        data: 'santri_name',
+                        name: 'santri_name',
+                    }
                 ],
                 columnDefs: [
 
                 ],
                 buttons: [{
-                    extend: 'pdf',
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        doc.content.splice(0, 0, {
+                            stack: [
+                                {
+                                    columns: [
+                                        {
+                                            image: "data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/jantikomantab.png'))) }}",
+                                            width: 100
+                                        },
+                                        {
+                                            stack: [
+                                                {
+                                                    text: 'PONDOK PESANTREN MUROTTILIL QUR-AN',
+                                                    alignment: 'center',
+                                                    bold: true,
+                                                    fontSize: 20,
+                                                    margin: [-75, 17, 0, 3],
+                                                },
+                                                {
+                                                    text: '"JANTIKO MANTAB"',
+                                                    alignment: 'center',
+                                                    bold: true,
+                                                    fontSize: 20,
+                                                    margin: [-75, 0, 0, 3]
+                                                },
+                                                {
+                                                    text: "64181 Sumbercangkring, Kecamatan Gurah, Kabupaten Kediri, Jawa Timur ",
+                                                    alignment: 'center',
+                                                    italics: true,
+                                                    fontSize: 15,
+                                                    margin: [-75, 0, 0, 0]
+                                                }
+                                            ]
+                                        },
+                                    ],
+                                },
+                                {
+                                    canvas: [{
+                                        type: 'line',
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 761,
+                                        y2: 0,
+                                        lineWidth: 2
+                                    }],
+                                    margin: [0, 15, 0, 0]
+                                },
+                                {
+                                    text: 'LAPORAN DATA WALI SANTRI',
+                                    alignment: 'center',
+                                    bold: true,
+                                    fontSize: 16,
+                                    margin: [20, 15, 0, 10]
+                                },
+                                {
+                                    text: 'Tanggal Cetak: ' + moment().locale('id').format("DD MMMM YYYY"),
+                                    alignment: 'right',
+                                    fontSize: 12,
+                                    margin: [0, 0, 0, 10]
+                                }
+                            ]
+                        });
+
+                        doc['footer'] = function(currentPage, pageCount) {
+                            return {
+                                text: 'Halaman ' + currentPage.toString() + ' dari ' + pageCount,
+                                alignment: 'center',
+                                margin: [0, 0, 0, 0]
+                            }
+                        }
+
+                        doc.content[1].table.body[0].forEach(element => {
+                            element.color = 'white';
+                            element.fillColor = '#08502b';
+                        });
+                        doc.content[1].table.dontBreakRows = true;
+                    },
                     class: 'buttons-pdf',
                     text: 'PDF',
-                    title: 'Laporan Data Wali Santri',
-                    filename: 'Laporan Data Wali Santri',
+                    title: '',
+                    filename: `Laporan Wali Santri ${new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate()}-${new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1}-${new Date().getFullYear()}`,
                 }]
             });
 

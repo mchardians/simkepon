@@ -22,6 +22,10 @@ class WaliSantriController extends Controller
     public function index()
     {
         if(request()->ajax()) {
+            if(request()->has('mode')) {
+                return $this->waliSantriService->getWaliSantris(request()->mode);
+            }
+
             return $this->waliSantriService->getWaliSantris();
         }
 
@@ -83,7 +87,21 @@ class WaliSantriController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $walisantri = $this->waliSantriService->findWaliSantri($id);
+
+            return response()->json([
+                "success" => true,
+                "status" => 200,
+                "data" => $walisantri
+            ], 200);
+        } catch (HttpException $e) {
+            return response()->json([
+                "success" => false,
+                "status" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
     }
 
     /**

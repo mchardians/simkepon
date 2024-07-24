@@ -17,9 +17,9 @@
                 <a href="{{ route('bendahara.dashboard') }}" class="dropdown-item has-icon">
                     <i class="fas fa-fire"></i> Dashboard
                 </a>
-                <a href="{{ route('bendahara.cicilan.pembayaran') }}" class="dropdown-item has-icon">
+                {{-- <a href="{{ route('bendahara.cicilan.pembayaran') }}" class="dropdown-item has-icon">
                     <i class="fas fa-coins"></i> Cicilan
-                </a>
+                </a> --}}
                 <a href="{{ route('bendahara.iuran.rekapitulasi') }}" class="dropdown-item has-icon">
                     <i class="fas fa-table"></i> Rekapitulasi
                 </a>

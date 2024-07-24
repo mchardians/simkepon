@@ -2,6 +2,7 @@
 
 namespace App\Services\Implementations;
 use App\Models\User;
+use App\Models\WaliSantri;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Contracts\UserService;
 use Illuminate\Database\Eloquent\Collection;

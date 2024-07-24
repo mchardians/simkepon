@@ -28,10 +28,10 @@
                     <a href="{{ route('kepalapondok.dashboard') }}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
                 </li>
                 <li class="nav-item {{ (request()->routeIs('kepalapondok.laporan.keuangan-masuk') ? 'active' : '') }}">
-                    <a href="{{ route('kepalapondok.laporan.keuangan-masuk') }}" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Laporan Keuangan Masuk</span></a>
+                    <a href="{{ route('kepalapondok.laporan.keuangan-masuk') }}" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Keuangan Masuk</span></a>
                 </li>
                 <li class="nav-item {{ (request()->routeIs('kepalapondok.laporan.keuangan-keluar') ? 'active' : '') }}">
-                    <a href="{{ route('kepalapondok.laporan.keuangan-keluar') }}" class="nav-link"><i class="fas fa-file-contract"></i><span>Laporan Keuangan Keluar</span></a>
+                    <a href="{{ route('kepalapondok.laporan.keuangan-keluar') }}" class="nav-link"><i class="fas fa-file-contract"></i><span>Keuangan Keluar</span></a>
                 </li>
                 @break
             @case("walisantri")

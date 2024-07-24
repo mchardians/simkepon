@@ -12,8 +12,6 @@ $(document).ready(function () {
             {data: 'DT_RowIndex', name: 'DT_RowIndex', width: '10px', orderable: false, searchable: false},
             {data: 'nik', name: 'nik', orderable: false, width: '100px'},
             {data: 'name', name: 'name'},
-            {data: 'email', name: 'email', width: '100px'},
-            {data: 'education', name: 'education'},
             {data: 'job', name: 'job'},
             {data: 'phone', name: 'phone'},
             {data: 'action', name: 'action', orderable: false, searchable: false}

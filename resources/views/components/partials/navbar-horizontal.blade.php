@@ -34,10 +34,10 @@
                             <i class="fas fa-fire"></i> Dashboard
                         </a>
                         <a href="features-settings.html" class="dropdown-item has-icon">
-                            <i class="fas fa-file-invoice-dollar"></i> Laporan Pemasukan
+                            <i class="fas fa-file-invoice-dollar"></i> Keuangan Masuk
                         </a>
                         <a href="features-settings.html" class="dropdown-item has-icon">
-                            <i class="fas fa-file-contract"></i> Laporan Pengeluaran
+                            <i class="fas fa-file-contract"></i> Keuangan Keluar
                         </a>
                         @break
                     @case("walisantri")

@@ -24,7 +24,7 @@
                                     <h4>Total Iuran Masak</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[0]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                                     <h4>Total Iuran Gas & Minyak</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[1]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                     <h4>Total Iuran Kas</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[2]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                                     <h4>Total Iuran Tabungan</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[3]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                                     <h4>Total Iuran Bisaroh</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[4]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                     <h4>Total Iuran Transport</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[5]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                     <h4>Total Iuran Darurat</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. 277.000
+                                    {{ Number::currency($saldos[6]['amount'], 'IDR') }}
                                 </div>
                             </div>
                         </div>
@@ -123,73 +123,67 @@
                 <div class="row">
                     <div class="col-12 col-md-5 col-lg-5">
                         <div class="card">
-                          <div class="card-header">
-                            <h4>Persentase Pelunasan Iuran Santri</h4>
-                          </div>
-                          <div class="card-body">
-                            <div class="d-block">
-                                <h6>Lunas</h6>
-                                <div class="progress mb-3" data-height="10" data-toggle="tooltip" title="25 Santri">
-                                  <div class="progress-bar bg-success" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
+                            <div class="card-header">
+                                <h4>Persentase Pelunasan Iuran Santri (Bulan Ini)</h4>
                             </div>
-                            <div class="d-block">
-                                <h6>Belum Lunas</h6>
-                                <div class="progress mb-3" data-height="10" data-toggle="tooltip" title="75 Santri">
-                                    <div class="progress-bar bg-danger" role="progressbar" data-width="75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-                                </div>
-                            </div>
-                          </div>
-                          <div class="card-footer">
-                            <div class="row">
-                                <div class="col-6 col-md-6 col-lg-6">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <div class="col-4">
-                                          <div class="progress" data-height="5">
-                                            <div class="progress-bar bg-success" role="progressbar" data-width="100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
+                            <div class="card-body">
+                                <div class="d-block">
+                                    <div class="float-right">
+                                        <div class="font-weight-600 text-success">{{ $santriLunas }} Santri</div>
+                                    </div>
+                                    <div class="media-title font-weight-bold">Lunas</div>
+                                    <div class="mt-1">
+                                        <div class="budget-price">
+                                            <div class="budget-price-square bg-success" data-width="{{ $lunas }}%"></div>
+                                            <div class="budget-price-label">{{ $lunas }}%</div>
                                         </div>
-                                        <span class="percent">
-                                          <span class="text-small">Lunas</span>
-                                        </span>
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-6 col-lg-6">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <div class="col-4">
-                                          <div class="progress" data-height="5">
-                                            <div class="progress-bar bg-danger" role="progressbar" data-width="100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
+                                <div class="d-block">
+                                    <div class="float-right">
+                                        <div class="font-weight-600 text-danger">{{ $santriBelumLunas }} Santri</div>
+                                    </div>
+                                    <div class="media-title font-weight-bold">Belum Lunas</div>
+                                    <div class="mt-1">
+                                        <div class="budget-price">
+                                            <div class="budget-price-square bg-danger"
+                                                data-width="{{ $belumLunas }}%"></div>
+                                            <div class="budget-price-label">{{ $belumLunas }}%</div>
                                         </div>
-                                        <span class="percent">
-                                          <span class="text-small">Belum Lunas</span>
-                                        </span>
                                     </div>
                                 </div>
                             </div>
-                          </div>
+                            <div class="card-footer pt-3 d-flex justify-content-center">
+                                <div class="budget-price justify-content-center">
+                                    <div class="budget-price-square bg-success" data-width="40"></div>
+                                    <div class="budget-price-label">Lunas</div>
+                                </div>
+                                <div class="budget-price justify-content-center">
+                                    <div class="budget-price-square bg-danger" data-width="40"></div>
+                                    <div class="budget-price-label">Belum Lunas</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-7 col-lg-7">
                         <div class="card">
-                          <div class="card-header">
-                            <h4>Daftar Santri Menunggak Iuran</h4>
-                          </div>
-                          <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="santri-menunggak-table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Santri</th>
-                                            <th>Iuran</th>
-                                            <th>Bulan</th>
-                                            <th>Nominal</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                            <div class="card-header">
+                                <h4>Daftar Santri Belum Lunas Iuran (Bulan Ini)</h4>
                             </div>
-                          </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="santri-menunggak-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>NIS</th>
+                                                <th>Nama</th>
+                                                <th>Total Tanggungan</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,18 +197,85 @@
     <x-slot name="scripts">
         <script>
             $(document).ready(function() {
-                $('#santri-menunggak-table').DataTable({
-                    // processing: true,
-                    // serverSide: true,
-                    // ajax: "#",
-                    // columns: [
-                    //     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                    //     { data: 'name', name: 'name' },
-                    //     { data: 'iuran', name: 'iuran' },
-                    //     { data: 'jatuh_tempo', name: 'jatuh_tempo' },
-                    //     { data: 'nominal', name: 'nominal' },
-                    //     { data: 'status', name: 'status' },
-                    // ]
+                function format(d) {
+                    let dl = document.createElement('dl');
+                    let dt = document.createElement('dt');
+                    dt.textContent = 'Tanggungan Iuran:';
+                    dl.appendChild(dt);
+
+                    d.forEach((element, index) => {
+
+                        let dd1 = document.createElement('dd');
+                        dd1.innerHTML = `
+                            ${index + 1}. ${element.iuran === 'gas_minyak' ? 'Gas & Minyak' : element.iuran.charAt(0).toUpperCase() + element.iuran.slice(1)}
+                            (${new Intl.NumberFormat('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR'
+                            }).format(element.nominal)})
+                        `;
+                        dl.appendChild(dd1);
+                    });
+
+                    return document.body.appendChild(dl);
+                }
+
+                const santriMenunggakTable = $('#santri-menunggak-table').DataTable({
+                    lengthMenu: [
+                        [5, 10, 25, 50, 100],
+                        [5, 10, 25, 50, 100]
+                    ],
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: '{{ route('bendahara.dashboard') }}',
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            className: 'dt-control text-left',
+                            data: 'nis',
+                            name: 'nis',
+                            render: function(data, type, row) {
+                                return `<span data-id="${row.id}">${data}</span>`;
+                            },
+                            defaultContent: ''
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'total',
+                            name: 'total'
+                        }
+                    ]
+                });
+
+                $('#santri-menunggak-table tbody').on('click', 'td.dt-control.text-left', function(e) {
+                    e.preventDefault();
+                    const tr = $(this).closest('tr');
+                    const row = santriMenunggakTable.row(tr);
+
+                    if (row.child.isShown()) {
+                        // This row is already open - close it
+                        row.child.hide();
+                    } else {
+                        // Open this row
+                        $.ajax({
+                            type: "GET",
+                            url: $("#santri-menunggak-table").data("url"),
+                            data: {
+                                "santri_id": row.data().id
+                            },
+                            dataType: "JSON",
+                            success: function(response) {
+                                row.child(format(response.iurans)).show();
+                            }
+                        });
+                    }
                 });
             });
         </script>

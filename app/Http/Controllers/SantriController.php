@@ -18,14 +18,6 @@ class SantriController extends Controller
         $this->santriService = $santriService;
     }
 
-    public function dashboard() {
-        $totalSantri = Santri::count();
-        $santriwan = Santri::query()->where('gender', '=', 'laki-laki')->count();
-        $santriwati = Santri::query()->where('gender', '=', 'perempuan')->count();
-
-        return view('pages.admin.dashboard', ['santriwan' => $santriwan, 'santriwati' => $santriwati, 'totalSantri' => $totalSantri]);
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -291,7 +283,7 @@ class SantriController extends Controller
         return view('pages.admin.laporan-santri', [
             'totalSantri' => $totalSantri,
             'totalSantriwan' => $totalSantriwan,
-            'totalSantriwati' => $totalSantriwati
+            'totalSantriwati' => $totalSantriwati,
         ]);
     }
 }

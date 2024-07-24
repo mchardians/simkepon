@@ -62,7 +62,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Santri</h5>
+                        <h5 class="modal-title text-primary">Tambah Santri</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -149,7 +149,7 @@
                         </form>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="btn-save">Save changes</button>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update Santri</h5>
+                        <h5 class="modal-title text-primary">Update Santri</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -248,7 +248,7 @@
                         </form>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="btn-update">Save changes</button>
                     </div>
                 </div>
@@ -270,7 +270,7 @@
         <script>
             $(document).ready(function() {
                 const genderFilter = `
-                    <ul class="nav nav-pills" id="filterWrapper">
+                    <ul class="nav nav-pills justify-content-center" id="filterWrapper">
                         <li class="nav-item">
                             <a class="nav-link filter" data-filter="">All <span class="badge">{{ $totalSantri }}</span></a>
                         </li>

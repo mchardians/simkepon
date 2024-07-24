@@ -154,6 +154,7 @@ $("table").on("click", ".btn-edit", function (e) {
             $("#birth_date-update").val(response.data.birth_date.split('-').reverse().join('-'));
             $("#wali_santri_id-update").val(response.data.wali_santri_id).trigger('change');
             $("#address-update").val(response.data.address);
+
             if(('picture' in response.data && response.data.picture !== null) && response.data.url !== null) {
                 $("#image-preview-update").css({
                     "background-image": "url(" + response.data.url + ")",
@@ -261,7 +262,7 @@ $("#form-update-santri").submit(function (e) {
                         }
                     });
                 }
-            })
+            });
         }
     });
 

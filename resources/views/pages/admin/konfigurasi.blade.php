@@ -2,6 +2,7 @@
     <x-slot name="css">
         <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/libs/selectric/selectric.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/libs/select2/select2.min.css') }}">
     </x-slot>
     <x-slot name="content">
         <section class="section">
@@ -34,7 +35,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="user-table" data-url="{{ route('admin.konfigurasi.users') }}">
+                                    <table class="table table-striped" id="user-table"
+                                        data-url="{{ route('admin.konfigurasi.users') }}">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No.</th>
@@ -66,15 +68,18 @@
                                                 <h5 id="state">Status:</h5>
                                             </div>
                                             <div class="text-center mt-3">
-                                                <img alt="QR Code" class="img-fluid m-auto" width="250px" id="loaders">
-                                                    <div id="qrCode"></div>
+                                                <img alt="QR Code" class="img-fluid m-auto" width="250px"
+                                                    id="loaders">
+                                                <div id="qrCode"></div>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <h6 class="text-info">Panduan:</h6>
                                             </div>
-                                            <ul class="border border-secondary" style="border-style: dashed !important;">
+                                            <ul class="border border-secondary"
+                                                style="border-style: dashed !important;">
                                                 <li>Klik Start Server</li>
-                                                <li>Buka Whatsapp <i class="fas fa-chevron-right"></i> Tautkan Perangkat</li>
+                                                <li>Buka Whatsapp <i class="fas fa-chevron-right"></i> Tautkan Perangkat
+                                                </li>
                                                 <li>Scan QR Code di atas</li>
                                                 <li>Sistem terhubung dengan WhatsApp</li>
                                             </ul>
@@ -82,7 +87,8 @@
                                     </div>
                                     <div class="card-footer bg-whitesmoke br">
                                         <div class="text-center">
-                                            <button class="btn btn-success mr-1" id="btn-start" value="start">Start Server</button>
+                                            <button class="btn btn-success mr-1" id="btn-start" value="start">Start
+                                                Server</button>
                                             <button class="btn btn-danger" id="btn-logout">Logout</button>
                                         </div>
                                     </div>
@@ -99,7 +105,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create User</h5>
+                        <h5 class="modal-title text-primary">Tambah User</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -109,9 +115,9 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nama User</label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        placeholder="Nama User">
-                                    <span class="invalid-feedback" role="alert"></span>
+                                    <select class="form-control" id="name" name="name">
+                                    </select>
+                                    <span class="invalid-feedback" role="alert" id="error-name"></span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="email">Email</label>
@@ -138,7 +144,7 @@
                         </form>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="btn-save">Save changes</button>
                     </div>
                 </div>
@@ -149,7 +155,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update User</h5>
+                        <h5 class="modal-title text-primary">Update User</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -164,14 +170,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="email-update">Email</label>
-                                <input type="email" class="form-control" id="email-update" name="email"
-                                    placeholder="Email">
+                                <input type="email" class="form-control disabled" id="email-update" name="email"
+                                    placeholder="Email" readonly>
                                 <span class="invalid-feedback" role="alert"></span>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="btn-update">Save changes</button>
                     </div>
                 </div>
@@ -185,10 +191,57 @@
         <script src="{{ asset('assets/js/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
         <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
         <script src="{{ asset('assets/js/libs/qrcodeJS/qrcode.js') }}"></script>
+        <script src="{{ asset('assets/js/libs/select2/select2.min.js') }}"></script>
     </x-slot>
     <x-slot name="scripts">
         <script src="{{ asset('assets/js/datatables/user-datatable.js') }}"></script>
         <script src="{{ asset('assets/js/actions/user-action.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $("#name").select2({
+                    dropdownParent: $("#createModal"),
+                    placeholder: "Pilih Wali Santri",
+                    ajax: {
+                        url: "{{ route('admin.konfigurasi.users.create') }}",
+                        data: function(params) {
+                            const query = {
+                                search: params.term,
+                            }
+
+                            return query;
+                        },
+                        dataType: 'json',
+                        processResults: function(response) {
+                            return {
+                                results: response.data.map((item) => {
+                                    return {
+                                        id: item.name,
+                                        text: `${item.name} (${item.nik})`,
+                                        walisantriId: item.id
+                                    }
+                                })
+                            }
+                        },
+                    }
+                });
+
+                $("#name").change(function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('admin.konfigurasi.users.create') }}",
+                        data: {
+                            "walisantri_id": $("#name").select2('data')[0]?.walisantriId,
+                        },
+                        dataType: "JSON",
+                        success: function (response) {
+                            $("#email").val(response.data.email);
+                        }
+                    });
+                });
+            });
+        </script>
         <script>
             const unpaired = "{{ asset('assets/loaders/loading.svg') }}";
             const paired = "{{ asset('assets/loaders/connected.png') }}";

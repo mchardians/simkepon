@@ -11,8 +11,13 @@ class WaliSantriServiceImp implements WaliSantriService
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getWaliSantris(): \Illuminate\Http\JsonResponse {
-        $query = WaliSantri::query()->select(['id', 'nik', 'name', 'email', 'education', 'job', 'phone']);
+    public function getWaliSantris($mode = null): \Illuminate\Http\JsonResponse {
+        $query = WaliSantri::query()->select(['wali_santri.id as id', 'nik', 'wali_santri.name', 'email', 'education', 'job', 'phone']);
+
+        if($mode === "print") {
+            $query = WaliSantri::query()->join('santri', 'santri.wali_santri_id', '=', 'wali_santri.id')
+            ->select(['wali_santri.id as id', 'nik', 'wali_santri.name', 'email', 'education', 'job', 'phone', 'santri.name as santri_name']);
+        }
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -41,11 +46,24 @@ class WaliSantriServiceImp implements WaliSantriService
                     '<button class="btn btn-action btn-primary mr-1 btn-edit" id="'.$data->id.'" data-toggle="modal" data-target="#editModal">
                         <i class="far fa-edit"></i>
                     </button>'.
-                    '<button class="btn btn-action btn-danger btn-delete" id="'.$data->id.'"><i class="fas fa-trash"></i></button>'
+                    '<button class="btn btn-action btn-danger mr-1 btn-delete" id="'.$data->id.'">
+                        <i class="fas fa-trash"></i>
+                    </button>'.
+                    '<button class="btn btn-action btn-info btn-detail" id="'.$data->id.'" data-toggle="modal" data-target="#infoModal">
+                        <i class="fas fa-info-circle"></i>
+                    </button>'
                 );
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    public function getDataWaliSantri(string $search = null): \Illuminate\Database\Eloquent\Collection {
+        if($search != null) {
+            return WaliSantri::query()->select(['id', 'name', 'nik'])->where('name', 'like', '%'.$search.'%')->get();
+        }
+
+        return WaliSantri::query()->select(['id', 'name', 'nik'])->get();
     }
 
     /**
@@ -89,7 +107,4 @@ class WaliSantriServiceImp implements WaliSantriService
     public function deleteWaliSantri(string $id): bool {
         return WaliSantri::findOrFail($id)->delete();
     }
-
-
-
 }

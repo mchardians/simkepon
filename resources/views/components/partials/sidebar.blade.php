@@ -13,13 +13,12 @@
             </a>
         </li>
         <li class="menu-header">Debit Asset</li>
-        <li class="nav-item dropdown {{ request()->routeIs('bendahara.keuangan-masuk.*') || request()->routeIs('bendahara.keuangan-masuk') ? 'active' : '' }}">
+        <li class="nav-item dropdown {{ request()->routeIs('bendahara.santri.pembayaran') || request()->routeIs('bendahara.keuangan-masuk') ? 'active' : '' }}">
             <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-hand-holding-usd"></i>
                 <span>Keuangan Masuk</span></a>
             <ul class="dropdown-menu">
-                <li class="{{ request()->routeIs('bendahara.keuangan-masuk.pembayaran') ? 'active' : '' }}"><a class="nav-link" href="{{ route('bendahara.keuangan-masuk.pembayaran') }}">Pembayaran Iuran</a></li>
+                <li class="{{ request()->routeIs('bendahara.santri.pembayaran') ? 'active' : '' }}"><a class="nav-link" href="{{ route('bendahara.santri.pembayaran') }}">Pembayaran Iuran</a></li>
                 <li class="{{ request()->routeIs('bendahara.keuangan-masuk') ? 'active' : '' }}"><a class="nav-link" href="{{ route('bendahara.keuangan-masuk') }}">Data Keuangan Masuk</a></li>
-                <li class="{{ request()->routeIs('bendahara.keuangan-masuk.riwayat') ? 'active' : '' }}"><a class="nav-link" href="{{ route('bendahara.keuangan-masuk.riwayat') }}">Riwayat Pembayaran</a></li>
             </ul>
         </li>
         <li class="menu-header">Kredit Asset</li>
@@ -28,12 +27,12 @@
                 <i class="fas fa-cart-arrow-down"></i> <span>Keuangan Keluar</span>
             </a>
         </li>
-        <li class="menu-header">Cicilan</li>
+        {{-- <li class="menu-header">Cicilan</li>
         <li class="{{ request()->routeIs('bendahara.cicilan.pembayaran') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('bendahara.cicilan.pembayaran') }}">
                 <i class="fas fa-coins"></i> <span>Bayar Cicilan</span>
             </a>
-        </li>
+        </li> --}}
         <li class="menu-header">Rekapitulasi</li>
         <li class="{{ request()->routeIs('bendahara.iuran.rekapitulasi') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('bendahara.iuran.rekapitulasi') }}">

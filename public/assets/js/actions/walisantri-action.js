@@ -251,3 +251,146 @@ $("table").on("click", ".btn-delete", function (e) {
         }
     });
 });
+
+$("table").on("click", ".btn-detail", function (e) {
+    e.preventDefault();
+
+    id = this.id;
+
+    $.ajax({
+        type: "GET",
+        url: `${$("#walisantri-table").data("url")}/${id}`,
+        dataType: "JSON",
+        success: function (response) {
+            const data = response.data;
+            const tbody = document.querySelector("#info-table tbody");
+
+            tbody.innerHTML = "";
+
+            const tr1 = document.createElement('tr');
+
+            const th1 = document.createElement("th");
+            th1.textContent = "NIK";
+            tr1.appendChild(th1);
+            const td1 = document.createElement("td");
+            td1.textContent = ":";
+            tr1.appendChild(td1);
+            const td2 = document.createElement("td");
+            td2.textContent = data.nik;
+            tr1.appendChild(td2);
+
+            tbody.appendChild(tr1);
+
+            const tr2 = document.createElement('tr');
+
+            const th2 = document.createElement("th");
+            th2.textContent = "Nama";
+            tr2.appendChild(th2);
+            const td3 = document.createElement("td");
+            td3.textContent = ":";
+            tr2.appendChild(td3);
+            const td4 = document.createElement("td");
+            td4.textContent = data.name;
+            tr2.appendChild(td4);
+
+            tbody.appendChild(tr2);
+
+            const tr3 = document.createElement('tr');
+
+            const th3 = document.createElement("th");
+            th3.textContent = "Email";
+            tr3.appendChild(th3);
+            const td5 = document.createElement("td");
+            td5.textContent = ":";
+            tr3.appendChild(td5);
+            const td6 = document.createElement("td");
+            td6.textContent = data.email;
+            tr3.appendChild(td6);
+
+            tbody.appendChild(tr3);
+
+            const tr4 = document.createElement('tr');
+
+            const th4 = document.createElement("th");
+            th4.textContent = "Pendidikan";
+            tr4.appendChild(th4);
+            const td7 = document.createElement("td");
+            td7.textContent = ":";
+            tr4.appendChild(td7);
+            const td8 = document.createElement("td");
+
+            switch(data.education) {
+                case "sd":
+                    data.education = "SD/ Sederajat";
+                    break;
+                case "smp":
+                    data.education = "SMP/ Sederajat";
+                    break;
+                case "sma":
+                    data.education = "SMA/ Sederajat";
+                    break;
+                case "diploma":
+                    data.education = "Diploma I-III";
+                    break;
+                case "sarjana":
+                    data.education = "Diploma IV/ Strata I";
+                    break;
+                case "magister":
+                    data.education = "Strata II";
+                    break;
+                case "doktor":
+                    data.education = "Strata III";
+                    break;
+                default:
+                    data.education = "Belum Sekolah";
+            }
+
+            td8.textContent = data.education;
+            tr4.appendChild(td8);
+
+            tbody.appendChild(tr4);
+
+            const tr5 = document.createElement('tr');
+
+            const th5 = document.createElement("th");
+            th5.textContent = "Pekerjaan";
+            tr5.appendChild(th5);
+            const td9 = document.createElement("td");
+            td9.textContent = ":";
+            tr5.appendChild(td9);
+            const td10 = document.createElement("td");
+            td10.textContent = data.job;
+            tr5.appendChild(td10);
+
+            tbody.appendChild(tr5);
+
+            const tr6 = document.createElement('tr');
+
+            const th6 = document.createElement("th");
+            th6.textContent = "Telepon";
+            tr6.appendChild(th6);
+            const td11 = document.createElement("td");
+            td11.textContent = ":";
+            tr6.appendChild(td11);
+            const td12 = document.createElement("td");
+            td12.textContent = data.phone;
+            tr6.appendChild(td12);
+
+            tbody.appendChild(tr6);
+
+            const tr7 = document.createElement('tr');
+
+            const th7 = document.createElement("th");
+            th7.textContent = "Alamat";
+            tr7.appendChild(th7);
+            const td13 = document.createElement("td");
+            td13.textContent = ":";
+            tr7.appendChild(td13);
+            const td14 = document.createElement("td");
+            td14.textContent = data.address;
+            tr7.appendChild(td14);
+
+            tbody.appendChild(tr7);
+        }
+    });
+});

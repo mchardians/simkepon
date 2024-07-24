@@ -107,4 +107,15 @@ class SantriServiceImp implements SantriService {
     public function getDetailsSantri(string $id): Santri|\Illuminate\Database\Eloquent\Collection {
         return Santri::with('walisantri')->findOrFail($id);
     }
+
+    /**
+     * @param string $params
+     * @return Santri|\Illuminate\Database\Eloquent\Collection
+     */
+    public function showSantrisByNameOrNis($params): Santri|\Illuminate\Database\Eloquent\Collection {
+        return Santri::query()->select(['id', 'nis', 'name'])
+            ->where('name', 'like', '%'.$params.'%')
+            ->orWhere('nis', 'like', '%'.$params.'%')
+            ->get();
+    }
 }

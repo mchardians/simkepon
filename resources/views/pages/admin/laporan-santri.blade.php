@@ -56,12 +56,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script src="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.0.8/b-3.0.2/b-colvis-3.0.2/b-html5-3.0.2/b-print-3.0.2/datatables.min.js"></script>
+        <script src="{{ asset('assets/js/libs/moment/moment-with-locales.min.js') }}"></script>
     </x-slot>
     <x-slot name="scripts">
         <script>
             $(document).ready(function() {
                 const santriTable = $('#santri-table').DataTable({
                     dom: '<"row justify-content-between"<"col-md-auto mr-auto"l><"#filter.col-md-auto m-auto"><"col-md-auto ml-auto"f>><"row justify-content-md-center"<"col-12"rt>><"row justify-content-between"<"col-md-auto mr-auto"i><"col-md-auto ml-auto"p>>',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, 'All']
+                    ],
                     ordering: true,
                     serverSide: true,
                     processing: true,
@@ -106,11 +111,119 @@
                     ],
                     buttons: [
                         {
-                            extend: 'pdf',
+                            extend: 'pdfHtml5',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            customize: function(doc) {
+                                doc.content.splice(0, 0, {
+                                    stack: [
+                                        {
+                                            columns: [
+                                                {
+                                                    image: "data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/jantikomantab.png'))) }}",
+                                                    width: 100
+                                                },
+                                                {
+                                                    stack: [
+                                                        {
+                                                            text: 'PONDOK PESANTREN MUROTTILIL QUR-AN',
+                                                            alignment: 'center',
+                                                            bold: true,
+                                                            fontSize: 20,
+                                                            margin: [-75, 17, 0, 3],
+                                                        },
+                                                        {
+                                                            text: '"JANTIKO MANTAB"',
+                                                            alignment: 'center',
+                                                            bold: true,
+                                                            fontSize: 20,
+                                                            margin: [-75, 0, 0, 3]
+                                                        },
+                                                        {
+                                                            text: "64181 Sumbercangkring, Kecamatan Gurah, Kabupaten Kediri, Jawa Timur ",
+                                                            alignment: 'center',
+                                                            italics: true,
+                                                            fontSize: 15,
+                                                            margin: [-75, 0, 0, 0]
+                                                        }
+                                                    ]
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            canvas: [{
+                                                type: 'line',
+                                                x1: 0,
+                                                y1: 0,
+                                                x2: 761,
+                                                y2: 0,
+                                                lineWidth: 2
+                                            }],
+                                            margin: [0, 15, 0, 0]
+                                        },
+                                        {
+                                            text: 'LAPORAN DATA SANTRI',
+                                            alignment: 'center',
+                                            bold: true,
+                                            fontSize: 16,
+                                            margin: [30, 15, 0, 10]
+                                        },
+                                        {
+                                            text: 'Tanggal Cetak: ' + moment().locale('id').format("DD MMMM YYYY"),
+                                            alignment: 'right',
+                                            fontSize: 12,
+                                            margin: [0, 0, 0, 10]
+                                        }
+                                    ]
+                                });
+
+                                doc['footer'] = function(currentPage, pageCount) {
+                                    if(currentPage === pageCount) {
+                                        return {
+                                            columns: [
+                                                {
+                                                    stack: [
+                                                        {
+                                                            text: "Jumlah Santriwan: {{ $totalSantriwan }}",
+                                                            margin: [45, 0, 0, 5],
+                                                        },
+                                                        {
+                                                            text: "Jumlah Santriwati: {{ $totalSantriwati }}",
+                                                            margin: [45, 0, 0, 5],
+                                                        },
+                                                        {
+                                                            text: "Total Santri: {{ $totalSantri }}",
+                                                            margin: [45, 0, 0, 5],
+                                                        },
+                                                        {
+                                                            text: 'Halaman ' + currentPage.toString() + ' dari ' + pageCount,
+                                                            alignment: 'center'
+                                                        }
+                                                    ],
+                                                    margin: [0, -35, 0, 0]
+                                                }
+                                            ]
+                                        };
+                                    } else {
+                                        return {
+                                            text: 'Halaman ' + currentPage.toString() + ' dari ' + pageCount,
+                                            alignment: 'center',
+                                            margin: [0, 0, 0, 0]
+                                        };
+                                    }
+                                }
+
+                                doc.content[1].table.body[0].forEach(element => {
+                                    element.color = 'white';
+                                    element.fillColor = '#08502b';
+                                });
+                                doc.content[1].table.widths = ['auto', '*', '*', '*', '*', '*'];
+                                doc.content[1].table.dontBreakRows = true;
+                            },
                             class: 'buttons-pdf',
                             text: 'PDF',
-                            title: 'Laporan Data Santri',
-                            filename: `Santri Reports ${new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate()}-${new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1}-${new Date().getFullYear()}`,
+                            title: '',
+                            filename: `Laporan Santri ${new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate()}-${new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1}-${new Date().getFullYear()}`,
                         }
                     ]
                 });
