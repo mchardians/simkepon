@@ -48,7 +48,7 @@ class RemindKepalaPondok extends Command
         $message .= "\nInformasi lebih lanjut dapat diakses pada halaman berikut:\nhttp://localhost:8000/user/login\n\nCredentials sebagai berikut:\n\nEmail: admin@simkepon.app\nPassword: rahasia\n\nDemikian informasi yang dapat kami sampaikan. Atas perhatiannya kami ucapkan terima kasih.";
 
         $response = Http::post($url, [
-            'number' => '0895378162538',
+            'number' => 'your phone number',
             'message' => $message
         ]);
 
