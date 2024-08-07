@@ -115,7 +115,7 @@ class RemindWaliSantri extends Command
             array_push($messages, $message);
         }
 
-        $response = Http::timeout(120)->post($url, [
+        $response = Http::timeout(300)->post($url, [
             'numbers' => $phones,
             'messages' => $messages
         ]);

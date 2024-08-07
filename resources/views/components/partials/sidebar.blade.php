@@ -27,12 +27,6 @@
                 <i class="fas fa-cart-arrow-down"></i> <span>Keuangan Keluar</span>
             </a>
         </li>
-        {{-- <li class="menu-header">Cicilan</li>
-        <li class="{{ request()->routeIs('bendahara.cicilan.pembayaran') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('bendahara.cicilan.pembayaran') }}">
-                <i class="fas fa-coins"></i> <span>Bayar Cicilan</span>
-            </a>
-        </li> --}}
         <li class="menu-header">Rekapitulasi</li>
         <li class="{{ request()->routeIs('bendahara.iuran.rekapitulasi') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('bendahara.iuran.rekapitulasi') }}">

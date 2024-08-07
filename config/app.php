@@ -176,7 +176,6 @@ return [
         App\Providers\IuranServiceProvider::class,
         App\Providers\PemasukanServiceProvider::class,
         App\Providers\PengeluaranServiceProvider::class,
-        App\Providers\CicilanServiceProvider::class,
     ])->toArray(),
 
     /*

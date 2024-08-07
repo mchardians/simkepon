@@ -94,15 +94,6 @@ Route::middleware('auth')->group(function() {
         Route::get('/bendahara/riwayat/mutasi', [MutasiController::class, 'riwayat'])->name('bendahara.riwayat.mutasi');
         Route::post('/bendahara/mutasi/transfer', [MutasiController::class, 'transfer'])->name('bendahara.mutasi.transfer');
 
-        Route::resource('/bendahara/cicilan/pembayaran', CicilanController::class)->names(
-            [
-                'index' => 'bendahara.cicilan.pembayaran',
-                'create' => 'bendahara.cicilan.pembayaran.create',
-                'store' => 'bendahara.cicilan.pembayaran.store',
-                'show' => 'bendahara.cicilan.pembayaran.show'
-            ]
-        );
-
         Route::get('/bendahara/iuran/rekapitulasi', [RekapitulasiController::class, 'index'])->name('bendahara.iuran.rekapitulasi');
 
         Route::get('/bendahara/laporan/keuangan-masuk', [KeuanganMasukController::class, 'report'])->name('bendahara.laporan.keuangan-masuk');
